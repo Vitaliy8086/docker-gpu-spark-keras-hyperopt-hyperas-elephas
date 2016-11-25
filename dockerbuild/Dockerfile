@@ -1,14 +1,13 @@
-FROM nvidia/cuda:7.5
+FROM nvidia/cuda:8.0
 
 
 RUN apt-get update \
+ && apt-get clean \
  && apt-get install -y locales \
- && dpkg-reconfigure -f noninteractive locales \
- && locale-gen C.UTF-8 \
+ && locale-gen en.US.UTF-8 \ 
  && /usr/sbin/update-locale LANG=C.UTF-8 \
  && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
  && locale-gen \
- && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 
@@ -24,12 +23,12 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update \
- && apt-get install -y curl unzip \
+ && apt-get install -y curl unzip git \
     python python-setuptools \
     python3 python3-setuptools \
- && ln -s /usr/bin/python3 /usr/bin/python \
+# && ln -s /usr/bin/python3 /usr/bin/python \
  && easy_install3 pip py4j \
- && easy_install pip
+ && easy_install pip \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -75,6 +74,21 @@ RUN curl -sL --retry 3 \
  && mv /usr/$SPARK_PACKAGE $SPARK_HOME \
  && chown -R root:root $SPARK_HOME
 
+
+# Tensorflow
+ENV TF_BINARY_URL https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl
+RUN pip install --upgrade $TF_BINARY_URL
+#python 3
+#RUN pip3 install --upgrade $TF_BINARY_URL
+
+
+#hyperopt
+RUN pip install git+git://github.com/hyperopt/hyperopt.git
+
+# Elephas
+RUN apt-get update
+RUN apt-get install -y liblapack-dev libblas-dev gfortran
+RUN pip install git+git://github.com/maxpumperla/elephas.git
 
 
 WORKDIR $SPARK_HOME
