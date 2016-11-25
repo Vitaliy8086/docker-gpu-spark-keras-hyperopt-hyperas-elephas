@@ -84,6 +84,7 @@ RUN pip install --upgrade $TF_BINARY_URL
 
 #hyperopt
 RUN pip install git+git://github.com/hyperopt/hyperopt.git
+RUN pip install git+git://github.com/maxpumperla/hyperas.git
 
 # Elephas
 RUN apt-get update
