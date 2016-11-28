@@ -1,6 +1,6 @@
-# gpu-spark-elephas
+# docker-gpu-spark-keras-hyperopt-hyperas-elephas
 
-Goal: Create a docker GPU spark cluster that can do hyper paramater search on keras models. 
+Goal: Create a docker hosted GPU spark cluster that can do hyper paramater search on keras models. 
 
 ## Host machine setup
 
